@@ -25,31 +25,20 @@ jobs:
       -  name: Install NASM and ld
          run: sudo apt-get install nasm binutils
 
-      -  name: test
-         run: sudo apt-get install tree && tree
-
-      #第三步，設置asm_name的環境變量為secret的值
-      -  name: Set asm_name environment variable
-         run: echo "asm_name=${{secrets.asm_name}}" >> $GITHUB_ENV
-
-      -  name: test
-         run: echo ${{env.asm_name }}
-
-      -  name: Get
+      #第三步，設置asm_name
+      -  name: Read...
          env:
             filename: ${{secrets.asm_name}}
          run: echo ${filename}
 
-      -  name: test
-         run: echo ${filename}
 
       #第四步，使用nasm命令來編譯asm文件，生成對象文件
       -  name: Compile asm file
-         run: nasm -f elf64 $ {{env.asm_name}} -o $ {{env.asm_name}}.o
+         run: nasm -f elf64 ${filename} -o ${filename}.o
 
       #第五步，使用ld命令來鏈接對象文件，生成執行檔
       -  name: Link object file
-         run: ld $ { { env.asm_name }}.o -o $ { { env.asm_name }}
+         run: ld ${filename}.o -o ${filename}
 
       #第六步，創建一個release，並把release的ID傳遞給下一個步驟
       -  name: Create a release

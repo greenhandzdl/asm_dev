@@ -39,25 +39,9 @@ jobs:
 
       #第六步，創建一個release，並把release的ID傳遞給下一個步驟
       -  name: Create a release
-         id: create_release
-         uses: actions/create-release@v1
-         env:
-          GITHUB_TOKEN: $ { { secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+         uses: "marvinpinto/action-automatic-releases@latest"
          with:
-          tag_name: $ { { github.ref }}
-          release_name: Release $ { { github.ref }}
-          draft: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-         output:
-          upload_url: $ { { steps.create_release.outputs.upload_url }} # This is used by the next step
-
-      #第七步，上傳執行檔到GitHub Releases上
-      -  name: Upload binary file to GitHub Releases
-         uses: actions/upload-release-asset@v1
-         env:
-          GITHUB_TOKEN: $ { { secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-         with:
-          upload_url: $ { { steps.create_release.outputs.upload_url }} # This pulls from the output of the previous step
-          asset_path: ./$ { { env.asm_name }} # The path to your binary file
-          asset_name: $ { { env.asm_name }} # The name of your binary file
-          asset_content_type: application/octet-stream # The content type of your binary file
+          files: |
+              ./*

@@ -1,50 +1,52 @@
-# 定義一個工作流名稱
+
+#定義一個工作流名稱
 name: Test and release ASM
 
-# 定義觸發工作流的事件，這裡是每當有push或pull request時
+#定義觸發工作流的事件，這裡是每當有push或pull request時
 on: [push, pull_request]
 
-# 定義一個工作流中的任務
+#定義一個工作流中的任務
 jobs:
 
-# 定義一個任務名稱
+#定義一個任務名稱
 test:
 
-# 定義運行任務的操作系統，這裡是ubuntu-latest
+#定義運行任務的操作系統，這裡是ubuntu-latest
 runs-on: ubuntu-latest
 
-# 定義任務中的步驟
+#定義任務中的步驟
 steps:
 
-# 第一步，使用actions/checkout@v2動作來檢出代碼
+#第一步，使用actions/checkout@v2動作來檢出代碼
 •  name: Checkout code
 
 uses: actions/checkout@v2
 
-# 第二步，使用apt-get命令來安裝NASM和ld工具
+#第二步，使用apt-get命令來安裝NASM和ld工具
 •  name: Install NASM and ld
 
 run: sudo apt-get install nasm binutils
 
-# 第三步，設置asm_name的環境變量為secret的值
+#第三步，設置asm_name的環境變量為secret的值
 •  name: Set asm_name environment variable
 
 run: echo "asm_name=$ { { secrets.asm_name }}" >> $GITHUB_ENV
 
-# 第四步，使用nasm命令來編譯asm文件，生成對象文件
+#第四步，使用nasm命令來編譯asm文件，生成對象文件
 •  name: Compile asm file
 
 run: nasm -f elf64 $ { { env.asm_name }} -o $ { { env.asm_name }}.o
 
-# 第五步，使用ld命令來鏈接對象文件，生成執行檔
+#第五步，使用ld命令來鏈接對象文件，生成執行檔
 •  name: Link object file
 
 run: ld $ { { env.asm_name }}.o -o $ { { env.asm_name }}
 
-# 第六步，使用./執行檔命令來運行執行檔，並檢查輸出是否為Hello World!
+#第六步，使用./執行檔命令來運行執行檔，並檢查輸出是否為Hello World!
 •  name: Run and check executable file
 
-- run: |
+•  run: |
+
 output=$(./$ { { env.asm_name }})
 if [ "$output" == 'Hello World!' ]; then
 echo "Test passed"
@@ -54,8 +56,7 @@ echo "Test failed"
 exit 1
 fi
 
-
-# 第七步，創建一個release，並把release的ID傳遞給下一個步驟
+#第七步，創建一個release，並把release的ID傳遞給下一個步驟
 •  name: Create a release
 
 id: create_release
@@ -70,7 +71,7 @@ prerelease: false
 output:
 upload_url: $ { { steps.create_release.outputs.upload_url }} # This is used by the next step
 
-# 第八步，上傳執行檔到GitHub Releases上
+#第八步，上傳執行檔到GitHub Releases上
 •  name: Upload binary file to GitHub Releases
 
 uses: actions/upload-release-asset@v1

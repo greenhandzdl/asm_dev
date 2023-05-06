@@ -19,52 +19,45 @@ jobs:
 
       #第一步，使用actions/checkout@v2動作來檢出代碼
       -  name: Checkout code
-
-      uses: actions/checkout@v2
+          uses: actions/checkout@v2
 
       #第二步，使用apt-get命令來安裝NASM和ld工具
       -  name: Install NASM and ld
-
-      run: sudo apt-get install nasm binutils
+          run: sudo apt-get install nasm binutils
 
       #第三步，設置asm_name的環境變量為secret的值
       -  name: Set asm_name environment variable
-
-      run: echo "asm_name=$ { { secrets.asm_name }}" >> $GITHUB_ENV
+          run: echo "asm_name=$ { { secrets.asm_name }}" >> $GITHUB_ENV
 
       #第四步，使用nasm命令來編譯asm文件，生成對象文件
       -  name: Compile asm file
-
-      run: nasm -f elf64 $ { { env.asm_name }} -o $ { { env.asm_name }}.o
+          run: nasm -f elf64 $ { { env.asm_name }} -o $ { { env.asm_name }}.o
 
       #第五步，使用ld命令來鏈接對象文件，生成執行檔
       -  name: Link object file
-
-      run: ld $ { { env.asm_name }}.o -o $ { { env.asm_name }}
+          run: ld $ { { env.asm_name }}.o -o $ { { env.asm_name }}
 
       #第六步，創建一個release，並把release的ID傳遞給下一個步驟
       -  name: Create a release
-
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-      GITHUB_TOKEN: $ { { secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-      tag_name: $ { { github.ref }}
-      release_name: Release $ { { github.ref }}
-      draft: false
-      prerelease: false
-      output:
-      upload_url: $ { { steps.create_release.outputs.upload_url }} # This is used by the next step
+          id: create_release
+          uses: actions/create-release@v1
+          env:
+          GITHUB_TOKEN: $ { { secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          with:
+          tag_name: $ { { github.ref }}
+          release_name: Release $ { { github.ref }}
+          draft: false
+          prerelease: false
+          output:
+          upload_url: $ { { steps.create_release.outputs.upload_url }} # This is used by the next step
 
       #第七步，上傳執行檔到GitHub Releases上
       -  name: Upload binary file to GitHub Releases
-
-      uses: actions/upload-release-asset@v1
-      env:
-      GITHUB_TOKEN: $ { { secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-      upload_url: $ { { steps.create_release.outputs.upload_url }} # This pulls from the output of the previous step
-      asset_path: ./$ { { env.asm_name }} # The path to your binary file
-      asset_name: $ { { env.asm_name }} # The name of your binary file
-      asset_content_type: application/octet-stream # The content type of your binary file
+          uses: actions/upload-release-asset@v1
+          env:
+          GITHUB_TOKEN: $ { { secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          with:
+          upload_url: $ { { steps.create_release.outputs.upload_url }} # This pulls from the output of the previous step
+          asset_path: ./$ { { env.asm_name }} # The path to your binary file
+          asset_name: $ { { env.asm_name }} # The name of your binary file
+          asset_content_type: application/octet-stream # The content type of your binary file

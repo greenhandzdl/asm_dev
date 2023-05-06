@@ -6,16 +6,12 @@ on: [push, pull_request]
 
 # 定義一個工作流中的任務
 jobs:
-
 # 定義一個任務名稱
 test:
-
 # 定義運行任務的操作系統，這裡是ubuntu-latest
 runs-on: ubuntu-latest
-
 # 定義任務中的步驟
 steps:
-
 # 第一步，使用actions/checkout@v2動作來檢出代碼
 •  name: Checkout code
 
@@ -51,6 +47,7 @@ fi
 
 # 第六步，創建一個release，並把release的ID傳遞給下一個步驟
 •  name: Create a release
+
 id: create_release
 uses: actions/create-release@v1
 env:
@@ -65,6 +62,7 @@ upload_url: $ { { steps.create_release.outputs.upload_url }} # This is used by t
 
 # 第七步，上傳執行檔到GitHub Releases上
 •  name: Upload binary file to GitHub Releases
+
 uses: actions/upload-release-asset@v1
 env:
 GITHUB_TOKEN: $ { { secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token

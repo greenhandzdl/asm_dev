@@ -29,12 +29,12 @@ jobs:
       -  name: Read...
          env:
             filename: ${{secrets.asm_name}}
-         run: echo ${filename}
+         run: asm_name= "${filename}.asm"
 
 
       #第四步，使用nasm命令來編譯asm文件，生成對象文件
       -  name: Compile asm file
-         run: nasm -f elf64 ${filename}.asm -o ${filename}.o
+         run: nasm -f elf64 ${asm_name} -o ${filename}.o
 
       #第五步，使用ld命令來鏈接對象文件，生成執行檔
       -  name: Link object file

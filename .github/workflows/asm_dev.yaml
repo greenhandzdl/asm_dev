@@ -29,7 +29,7 @@ jobs:
       -  name: Read...
          env:
             filename: ${{secrets.asm_name}}
-         run: asm_name = $filename.asm
+         run: echo "new a variance..." && asm_name = $filename.asm
 
       #第四步，使用nasm命令來編譯asm文件，生成對象文件
       -  name: Compile asm file

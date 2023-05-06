@@ -25,6 +25,9 @@ jobs:
       -  name: Install NASM and ld
          run: sudo apt-get install nasm binutils
 
+      -  name: test
+         run: sudo apt-get install tree && tree
+
       #第三步，設置asm_name的環境變量為secret的值
       -  name: Set asm_name environment variable
          run: echo "asm_name=$ { { secrets.asm_name }}" >> $GITHUB_ENV

@@ -44,7 +44,7 @@ run: ld $ { { env.asm_name }}.o -o $ { { env.asm_name }}
 # 第六步，使用./執行檔命令來運行執行檔，並檢查輸出是否為Hello World!
 •  name: Run and check executable file
 
-run: |
+- run: |
 output=$(./$ { { env.asm_name }})
 if [ "$output" == 'Hello World!' ]; then
 echo "Test passed"

@@ -46,13 +46,14 @@ run: ld $ { { env.asm_name }}.o -o $ { { env.asm_name }}
 
 run: |
 output=$(./$ { { env.asm_name }})
-if [ "$output" == "Hello World!" ]; then
+if [ "$output" == 'Hello World!' ]; then
 echo "Test passed"
 exit 0
 else
 echo "Test failed"
 exit 1
 fi
+
 
 # 第七步，創建一個release，並把release的ID傳遞給下一個步驟
 •  name: Create a release

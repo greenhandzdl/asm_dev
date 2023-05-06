@@ -18,10 +18,8 @@ jobs:
     steps:
 
       #第一步，使用actions/checkout@v2動作來檢出代碼
-      -  name: Checkout code
-          uses: actions/checkout@v3
-          with:
-            path: main
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       #第二步，使用apt-get命令來安裝NASM和ld工具
       -  name: Install NASM and ld

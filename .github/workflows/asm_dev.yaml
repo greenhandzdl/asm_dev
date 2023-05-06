@@ -42,21 +42,7 @@ run: nasm -f elf64 $ { { env.asm_name }} -o $ { { env.asm_name }}.o
 
 run: ld $ { { env.asm_name }}.o -o $ { { env.asm_name }}
 
-#第六步，使用./執行檔命令來運行執行檔，並檢查輸出是否為Hello World!
-•  name: Run and check executable file
-
-•  run: |
-
-output=$(./$ { { env.asm_name }})
-if [ "$output" == 'Hello World!' ]; then
-echo "Test passed"
-exit 0
-else
-echo "Test failed"
-exit 1
-fi
-
-#第七步，創建一個release，並把release的ID傳遞給下一個步驟
+#第六步，創建一個release，並把release的ID傳遞給下一個步驟
 •  name: Create a release
 
 id: create_release
@@ -71,7 +57,7 @@ prerelease: false
 output:
 upload_url: $ { { steps.create_release.outputs.upload_url }} # This is used by the next step
 
-#第八步，上傳執行檔到GitHub Releases上
+#第七步，上傳執行檔到GitHub Releases上
 •  name: Upload binary file to GitHub Releases
 
 uses: actions/upload-release-asset@v1

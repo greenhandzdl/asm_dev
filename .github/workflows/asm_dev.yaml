@@ -40,6 +40,9 @@ jobs:
             filename: ${{secrets.asm_name}}
          run: echo ${filename}
 
+      -  name: test
+         run: echo ${filename}
+
       #第四步，使用nasm命令來編譯asm文件，生成對象文件
       -  name: Compile asm file
          run: nasm -f elf64 $ {{env.asm_name}} -o $ {{env.asm_name}}.o

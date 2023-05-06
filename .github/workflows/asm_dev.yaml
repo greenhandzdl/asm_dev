@@ -38,7 +38,7 @@ jobs:
       -  name: Get
          env:
             filename: ${{secrets.asm_name}}
-          run: echo ${filename}
+         run: echo ${filename}
 
       #第四步，使用nasm命令來編譯asm文件，生成對象文件
       -  name: Compile asm file
